@@ -5,6 +5,7 @@ import Home from './Home';
 import Header from './Header';
 import Orders from './Orders';
 import AddItem from './AddItem';
+import FullPageIntroWithNonFixedNavbar from './mynav';
 
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ShowItems from './ShowItems';
@@ -17,7 +18,7 @@ class App extends Component {
 
       <Router>
       <Switch>
-        <Route exact path="/" component={Home}/>
+        <Route exact path="/" component={FullPageIntroWithNonFixedNavbar}/>
         <Route path="/about" component={Header}/>
         <Route path="/Orders" component={Orders}/>
         <Route path="/add" component={AddItem}/>

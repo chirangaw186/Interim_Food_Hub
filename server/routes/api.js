@@ -1,8 +1,33 @@
 const express= require('express');
 const router = express.Router();
+const multer = require('multer');
+const path =require('path');
+
 
 const Details = require('../models/dataschema');
 const Items = require('../models/itemschema');
+
+
+
+//set storage engine
+
+const storage = multer.diskStorage({
+    destination: '../upload',
+    filename: function(req,file,cb){
+        cb(null, Date.now()+'-'+file.originalname);   
+    }
+
+});
+
+//Init Upload
+
+const upload = multer({
+    storage:storage
+
+}).single('file');
+
+
+
 
 //get a list from db
 router.post('/ret',function(req,res){
@@ -58,7 +83,21 @@ router.post('/def',function(req,res,next){
     });
 
 
-}); 
+});
+
+router.post('/imageup',function(req,res){
+    // console.log(this.files.file);
+    //console.log(req.file)
+    upload(req,res,(err) => {
+        if(err){
+            console.log(err);
+        }else{
+            console.log(req.file);
+        }
+    });
+
+});
+
 router.post('/get',function(req,res){
 
 });
@@ -92,5 +131,29 @@ router.post('/deletef',function(req,res,next){
    
 
 }); 
+
+
+router.post('/authenticate',function(req,res){
+    Items.find(function(details){
+        res.send(details);
+    });
+ 
+});
+
+router.get('/', (req, res) => {
+    Items.find({}, (err, items) => {
+        console.log(items);
+      if (err) return res.json({ success: false, error: err });
+      return res.json(items);
+    });
+  });
+
+  router.get('/users', (req, res) => {
+    Items.find({}, (err, items) => {
+        console.log(items);
+      if (err) return res.json({ success: false, error: err });
+      return res.json(items);
+    });
+  });
 
 module.exports=router;

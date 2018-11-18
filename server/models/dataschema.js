@@ -5,11 +5,15 @@ const schema = mongoose.Schema;
 
 const Details = new schema({
    
-    email:{
+    name:{
         type:String
     },
     password:{
         type:String
+       
+    },
+    admin:{
+        type:Boolean
        
     }
     

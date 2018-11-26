@@ -14,6 +14,7 @@ import Orders from './Orders';
 import AddItem from './AddItem';
 import RealUpdate from './RealUpdate';
 import ShopUpdate from './Components/ShopUpdate'
+import RealShowItems from './RealShowItems';
 import ImageUpload from './ImageUpload';
 
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -39,6 +40,7 @@ class App extends Component {
         <Route path="/rupdate" component={RealUpdate}/>
         <Route path="/supdate" component={ShopUpdate}/>
         <Route path="/imageupload" component={ImageUpload}/>
+        <Route path="/realshow" component={RealShowItems}/>
       </Switch>
     </Router>
        

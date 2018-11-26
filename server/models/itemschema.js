@@ -19,7 +19,11 @@ const Item = new schema({
     price:{
         type:Number
        
+    },
+    imagepath:{
+        type: String       
     }
+    
     
      
 });

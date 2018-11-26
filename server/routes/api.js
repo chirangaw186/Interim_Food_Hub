@@ -6,13 +6,13 @@ const path =require('path');
 
 const Details = require('../models/dataschema');
 const Items = require('../models/itemschema');
-
+let imagepath="";
 
 
 //set storage engine
 
 const storage = multer.diskStorage({
-    destination: '../upload',
+    destination: '../src/upload',
     filename: function(req,file,cb){
         cb(null, Date.now()+'-'+file.originalname);   
     }
@@ -70,12 +70,12 @@ router.post('/def',function(req,res,next){
         itemid: req.body.itemid,
         itemname: req.body.itemname,
         qty:req.body.qty,
-        price: req.body.price
-       
+        price: req.body.price,
+        imagepath:imagepath    
     });
     det.save((err,doc)=>{
         if(!err){
-            res.send(doc);
+            res.send(doc);  
         }
         else{
             console.log('Error in sending Employees :'+ JSON.stringify(err,undefined,2));
@@ -91,8 +91,11 @@ router.post('/imageup',function(req,res){
     upload(req,res,(err) => {
         if(err){
             console.log(err);
-        }else{
-            console.log(req.file);
+        }else{  
+          //  console.log(req.file);
+            res.send(req.file.filename);
+            imagepath=req.file.filename;
+          
         }
     });
 

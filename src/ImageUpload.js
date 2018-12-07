@@ -68,7 +68,7 @@ class ImageUpload extends Component {
 
       
             <div className="col-sm-4">
-            <input type="file" className="form-control" onChange={this.handleSelectedFiles}/>
+              <input type="file" className="form-control" onChange={this.handleSelectedFiles}/>
         </div>
  
         <br/>

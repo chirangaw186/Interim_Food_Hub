@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './additemCSS.css';
+
 
 class RealShowItems extends Component {
 
@@ -7,10 +9,13 @@ class RealShowItems extends Component {
         super(props);
         this.state = {
          item: [],
-         imagepreviewurl:""
+         imagepreviewurl:"",
+         currentID:""
          
         };
-       
+
+        //this.getItemID=this.getItemID.bind(this);
+        this.deleteItem=this.deleteItem.bind(this);
     }
 
 
@@ -27,11 +32,71 @@ class RealShowItems extends Component {
               
                item:res
            });
-           console.log(this.state.item);
+           //console.log(this.state.item);
         })
        
 
     };
+
+    // getItemID(key){
+    //     console.log(key)
+        
+    // }
+    editItem(key){
+      console.log(key);
+     // this.props.history.push('/edit/${item.itemid}')
+      // const food ={
+        
+      //     itemid: key
+         
+      //   }
+       
+      //       fetch('http://localhost:4000/index/deletef',{
+      //         method:"POST",
+      //         headers: {
+      //           "Content-Type": "application/json"
+      //         },
+      //         body:JSON.stringify(food)
+      //       })
+      //       .then(function(response){ 
+      //         return response.json();   
+      //        })
+      //        .then(function(data){ 
+               
+      //        console.log(data)
+      //        });
+      
+  }
+
+
+
+    deleteItem(key){
+        console.log(key);
+
+        const food ={
+          
+            itemid: key
+           
+          }
+         
+              fetch('http://localhost:4000/index/deletef',{
+                method:"POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body:JSON.stringify(food)
+              })
+              .then(function(response){ 
+                return response.json();   
+               })
+               .then(function(data){ 
+                 
+               console.log(data)
+               });
+        
+    }
+
+    
     
   render() {
 
@@ -56,16 +121,18 @@ class RealShowItems extends Component {
         // </div>
 
 
-<div className="container">
+<div className="container" >
+
 <hr/>
         <h2>Food Items</h2>
               
-    {this.state.item.map(item => <div key={item.id}>  
-        
-        <div className="form-group">
+    {this.state.item.map((item) => <div key={item.id}>  
+        <hr/>
+        <div style={{backgroundColor:"#FFF0F5" }}>
+        <div className="form-group" >
           <label className="col-lg-3 control-label">Item ID:</label>
           <div className="col-lg-8">
-          <input className="form-control" type="text" value={item.itemid}/>
+          <input className="form-control" type="text" value={item.itemid} />
           </div>
         </div>
      
@@ -101,14 +168,24 @@ class RealShowItems extends Component {
 
           <div className="form-group">
           <label className="col-md-3 control-label"></label>
+
+              {/* <Link to={`/edit/${item.itemid}`} activeClassName="current" className="btn btn-info btn-sm">Edit Item</Link> */}
+              <Link to={`/edit/${item.itemid}`}  className="btn btn-info btn-sm">Edit Item</Link>
+
+                 <button type="button" className="btn btn-info btn-sm" onClick={() =>this.editItem(item.itemid)}>
+                    <span className="glyphicon glyphicon-trash"></span> Edit Item
+                 </button> 
           
-                 <button type="button" class="btn btn-success btn-sm">
-            <span className="glyphicon glyphicon-trash"></span> Delete this item
-               </button> 
+          
+                 <button type="button" className="btn btn-danger btn-sm" style={{margin:"20px" }} onClick={() =>this.deleteItem(item.itemid)}>
+                    <span className="glyphicon glyphicon-trash"></span> Delete this item
+                 </button> 
+
                 </div>
 
                 <div className="imgPreview">
-                        <img src={require("./upload/"+item.imagepath)} alt={<div>Please select an image for preview</div>}/>    
+                        <img src={require("./upload/"+item.imagepath)} alt={<div>Please select an image to preview</div>}/>     
+                </div>
                 </div>
          </div>
          )}

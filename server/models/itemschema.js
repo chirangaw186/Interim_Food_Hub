@@ -6,7 +6,8 @@ const schema = mongoose.Schema;
 const Item = new schema({
    
     itemid:{
-        type:String
+        type:String,
+        unique:true
     },
     itemname:{
         type:String

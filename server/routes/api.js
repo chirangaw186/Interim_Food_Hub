@@ -46,6 +46,14 @@ router.get('/retrieve', (req, res) => {
     });
   });
 
+  router.post('/retrieveone', (req, res) => {
+    Items.findOne({itemid:req.body.itemid}, (err, items) => {
+        console.log(items);
+      if (err) return res.json({ success: false, error: err });
+      return res.json(items);
+    });
+  });
+
 router.post('/abc',function(req,res,next){
     var det = new Details({
        
@@ -90,10 +98,10 @@ router.post('/imageup',function(req,res){
     //console.log(req.file)
     upload(req,res,(err) => {
         if(err){
-            console.log(err);
+            res.status(404).json({ message : "Could not upload the image"})
         }else{  
           //  console.log(req.file);
-            res.send(req.file.filename);
+            res.status(200).send(req.file.path);         
             imagepath=req.file.filename;
           
         }
@@ -124,7 +132,7 @@ router.delete('/dew/:id',function(req,res,next){
 
 router.post('/deletef',function(req,res,next){
    
-    Items.deleteOne({ itemname: req.body.itemname },(err, items) => {
+    Items.deleteOne({ itemid:req.body.itemid },(err, items) => {
         console.log(items);
       if (err) return res.json({ success: false, error: err });
       return res.json(items);

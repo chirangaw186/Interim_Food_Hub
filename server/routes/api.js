@@ -6,6 +6,9 @@ const path =require('path');
 
 const Details = require('../models/dataschema');
 const Items = require('../models/itemschema');
+const InvoiceItems = require('../models/invoicedb');
+const OrderedItems = require('../models/ordereditems');
+
 let imagepath="";
 
 
@@ -38,8 +41,31 @@ router.post('/ret',function(req,res){
 });
 //add anew data to db
 
+router.post('/nikan',function(req,res){
+   console.log('nikan')
+});
+
+
+
 router.get('/retrieve', (req, res) => {
     Items.find({}, (err, items) => {
+        console.log(items);
+      if (err) return res.json({ success: false, error: err });
+      return res.json(items);
+    });
+  });
+
+  router.get('/retrieveallinvoices', (req, res) => {
+    InvoiceItems.find({}, (err, items) => {
+        console.log(items);
+      if (err) return res.json({ success: false, error: err });
+      return res.json(items);
+    });
+  });
+
+
+  router.get('/retrieveordereditems/:id', (req, res) => {
+    OrderedItems.find({invoiceID:req.params.id}, (err, items) => {
         console.log(items);
       if (err) return res.json({ success: false, error: err });
       return res.json(items);
@@ -93,25 +119,70 @@ router.post('/def',function(req,res,next){
 
 });
 
-router.post('/imageup',function(req,res){
+
+
+router.post('/fooddetails/:id',function(req,res,next){
+
+    //console.log("I'm in food details")
+    Items.findOneAndUpdate({itemid:req.params.id},req.body).then(function(){
+        Items.findOne({itemid:req.params.id}).then(function(details){
+            res.send(details);
+        });
+        
+    });
+
+});
+
+
+router.post('/foodupdate/:id',function(req,res,next){
+
+    //console.log("I'm in food details")
+    Items.findOneAndUpdate({itemid:req.params.id},req.body).then(function(){
+        Items.findOne({itemid:req.params.id}).then(function(details){
+            res.send(details);
+        });
+        
+    });
+
+});
+
+
+router.post('/imageup/:id',function(req,res){
+   
     // console.log(this.files.file);
     //console.log(req.file)
     upload(req,res,(err) => {
         if(err){
             res.status(404).json({ message : "Could not upload the image"})
         }else{  
+
+            var imgdet = new Items({
+                itemid: req.params.id,
+                imagepath:req.file.filename    
+            })
           //  console.log(req.file);
-            res.status(200).send(req.file.path);         
-            imagepath=req.file.filename;
+           
+            //imagepath=req.file.filename;
+            imgdet.save((err,doc)=>{
+                if(!err){
+                    res.send(doc);  
+                }
+                else{
+                    res.status(404).json({ message : "Could not save the image path in database!"})
+                }
+            })
+          
+
           
         }
     });
 
 });
 
-router.post('/get',function(req,res){
 
-});
+
+
+
 //update data in db
 router.put('/get/:id',function(req,res,next){
     Details.findByIdAndUpdate({_id:req.params.id},req.body).then(function(){
@@ -122,6 +193,8 @@ router.put('/get/:id',function(req,res,next){
     });
     
 });
+
+
 //deleta data from db
 router.delete('/dew/:id',function(req,res,next){
     Details.findByIdAndRemove({_id:req.params.id}).then(function(details){
@@ -129,6 +202,8 @@ router.delete('/dew/:id',function(req,res,next){
     });
     
 });
+
+
 
 router.post('/deletef',function(req,res,next){
    
@@ -151,6 +226,8 @@ router.post('/authenticate',function(req,res){
  
 });
 
+
+
 router.get('/', (req, res) => {
     Items.find({}, (err, items) => {
         console.log(items);
@@ -158,6 +235,9 @@ router.get('/', (req, res) => {
       return res.json(items);
     });
   });
+
+
+
 
   router.get('/users', (req, res) => {
     Items.find({}, (err, items) => {

@@ -17,10 +17,13 @@ import ShopUpdate from './Components/ShopUpdate'
 import RealShowItems from './RealShowItems';
 import ImageUpload from './ImageUpload';
 import Edit from './edititems';
+import AI from './allinvoices';
+import ViewInvoices from './ViewInvoice';
 
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ShowItems from './ShowItems';
 import UpdateItem from './UpdateItem';
+
 
 
 class App extends Component {
@@ -43,6 +46,8 @@ class App extends Component {
         <Route path="/imageupload" component={ImageUpload}/>
         <Route path="/realshow" component={RealShowItems}/>
         <Route path="/edit/:id" component={Edit}/>
+        <Route path="/ai/:id" component={AI}/>
+        <Route path="/vi/:id" component={ViewInvoices}/>
         
       </Switch>
     </Router>

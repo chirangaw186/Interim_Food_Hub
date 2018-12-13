@@ -10,7 +10,7 @@ class AddItem extends Component {
           itemid:"C001",
           itemname: "Fried Rice",
           qty: 20,
-          price: 100,
+          price: 100, 
           selectedFile: null,
           loaded: 0,
           imagepath:[],
@@ -140,32 +140,34 @@ class AddItem extends Component {
       data.append('file',this.state.selectedFile);
 
 
-      console.log(this.state);
+     // console.log(this.state);
       
      
-      fetch('http://localhost:4000/index/imageup',{
+      fetch('http://localhost:4000/index/imageup/'+this.state.itemid,{
         mode:"no-cors",
         
         method:"POST",
     
         body:data
       }).then(function(response){ 
+        // console.log(response.json())
          
-        return response.json();   
+
        
         });
 
       const user ={
-        itemid: this.state.itemid,
         itemname: this.state.itemname,
         qty:this.state.qty,
-        price: this.state.price,
-        imagepath:this.state.imagepath
-        
+        price: this.state.price        
       }
+
+
+         
+      
   
 
-      fetch('http://localhost:4000/index/def',{
+      fetch('http://localhost:4000/index/fooddetails/'+this.state.itemid,{
         method:"POST",
         headers: {
           "Content-Type": "application/json"
@@ -180,17 +182,13 @@ class AddItem extends Component {
        })
        .then((res) => {
             console.log(res);
-            this.setState({
-              imagepath:res
-            })
-            console.log(this.state.imagepath['imagepath']);
             window.alert('Food Item added successfully!');
        });
        
      
  
       
-      console.log(this.state.selectedFile)
+       console.log(this.state.selectedFile)
      
     }
 

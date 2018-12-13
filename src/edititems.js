@@ -11,7 +11,8 @@ constructor(props){
         itemname:"",
         qty:null,
         price:null,
-        imagepath:""
+        imagepath:"",
+        i:""
 
        
     }
@@ -20,6 +21,9 @@ constructor(props){
     this.onNameValueChange=this.onNameValueChange.bind(this);
     this.onQtyValueChange=this.onQtyValueChange.bind(this);
     this.onPriceValueChange=this.onPriceValueChange.bind(this);
+    this.handleSubmit=this.handleSubmit.bind(this);
+    this.handleImage=this.handleImage.bind(this);
+
     
    
 
@@ -80,7 +84,8 @@ componentDidMount(){
               mitemid:res.itemid,
               qty:res.qty,
               price:res.price,
-              imagepath:res.imagepath
+              imagepath:res.imagepath,
+              i:res.imagepath
 
              
            });
@@ -93,8 +98,40 @@ componentDidMount(){
 }
 
 
-  render() {
+handleSubmit(){
+  
+        fetch('http://localhost:4000/index/foodupdate/'+this.state.itemid,{
+          method:"POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body:JSON.stringify({
+            itemname:this.state.itemname,
+            itemid:this.state.itemid,
+            qty:this.state.qty,
+            price:this.state.price,
+          })
+        })
+        .then(response => response.json())
+        .then(()=>{
+          window.alert("Food Item Updated Successfully!")
+        })
 
+}
+
+ 
+
+  handleImage(){
+  
+    return <img src={"./upload/"+this.state.imagepath} alt="No image to preview"/>;    
+  }
+
+
+  render() {
+    const { i } =this.state;
+    console.log(i)
+    
+          
     return (
         <div className="container">
                <div>  
@@ -129,28 +166,39 @@ componentDidMount(){
           </div>
 
 
-          <div className="form-group">
-          <label className="col-lg-3 control-label">Item image:</label>
-          <div className="col-lg-8">
-          <input type="file" className="form-control"/>
-          </div>
-        </div>
+         
               
 
           <div className="form-group">
-          <label className="col-md-3 control-label"></label>
+          <label className=" control-label"></label>
 
             
           
-                 <button type="button" className="btn btn-danger btn-sm" style={{margin:"20px" }} >
-                    <span className="glyphicon glyphicon-trash"></span> Delete this item
+                 <button type="button" className="btn btn-danger btn-sm" style={{margin:"20px" }} onClick={this.handleSubmit} >
+                    <span className="glyphicon glyphicon-trash"></span> Update
                  </button> 
 
                 </div>
 
-                <div className="imgPreview">
-                        <img src={require("./upload/"+this.state.imagepath)} alt={<div>Please select an image to preview</div>}/>    
+                <div className="imgPreview">            
+
+                   {/* <img src={require("D:\\SoftwareProject\\Interim_Food_Hub\\src\\upload\\"+this.state.imagepath)} alt="No image to preview"/>;     */}
                 </div>
+
+
+
+                 <div className="form-group">
+                      <label className=" control-label"></label>
+                      <button type="button" className="btn btn-info btn-sm" style={{margin:"20px" }} >
+                    Change Image
+                 </button> 
+                </div>
+
+
+            
+          
+                
+
                 </div>
          </div>
         </div>

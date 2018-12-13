@@ -91,7 +91,7 @@ class RealShowItems extends Component {
                })
                .then(function(data){ 
                  
-               console.log(data)
+                  window.alert("Food Item Deleted Successfully!")
                });
         
     }
@@ -172,10 +172,7 @@ class RealShowItems extends Component {
               {/* <Link to={`/edit/${item.itemid}`} activeClassName="current" className="btn btn-info btn-sm">Edit Item</Link> */}
               <Link to={`/edit/${item.itemid}`}  className="btn btn-info btn-sm">Edit Item</Link>
 
-                 <button type="button" className="btn btn-info btn-sm" onClick={() =>this.editItem(item.itemid)}>
-                    <span className="glyphicon glyphicon-trash"></span> Edit Item
-                 </button> 
-          
+                
           
                  <button type="button" className="btn btn-danger btn-sm" style={{margin:"20px" }} onClick={() =>this.deleteItem(item.itemid)}>
                     <span className="glyphicon glyphicon-trash"></span> Delete this item
@@ -184,7 +181,7 @@ class RealShowItems extends Component {
                 </div>
 
                 <div className="imgPreview">
-                        <img src={require("./upload/"+item.imagepath)} alt={<div>Please select an image to preview</div>}/>     
+                        <img src={require("./upload/"+item.imagepath)} alt="Please select an image to preview"/>     
                 </div>
                 </div>
          </div>

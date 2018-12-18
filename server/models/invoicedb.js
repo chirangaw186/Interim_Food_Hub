@@ -8,9 +8,14 @@ const invoices = new schema({
         type:String,
         required:true
     },
+    shopid:{
+        type:String,
+        required:true
+ 
+    },
     shopname:{
         type:String,
-        default:"No shop name"
+        required:true
         
     },
     customeremail:{
@@ -41,12 +46,18 @@ const invoices = new schema({
     assignstatus:{
         type:String,
         required:true,
+        default:"Not Assigned" 
     
     },
     delivererID:{
         type:String,
+        default:"Not Assigned" 
    
     
+    },
+    delivererName:{
+        type:String,
+        default:"Not Assigned"    
     }
 
 
@@ -55,5 +66,5 @@ const invoices = new schema({
      
 });
 
-const InvoiceItem = mongoose.model('invoices',invoices);//'details' is mongodb name Details is the schema name;register is collection name;
+const InvoiceItem = mongoose.model('invoices',invoices);
 module.exports=InvoiceItem;

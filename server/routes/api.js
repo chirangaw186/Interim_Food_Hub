@@ -8,6 +8,8 @@ const Details = require('../models/dataschema');
 const Items = require('../models/itemschema');
 const InvoiceItems = require('../models/invoicedb');
 const OrderedItems = require('../models/ordereditems');
+const Deliverer = require('../models/Deliverer');
+
 
 let imagepath="";
 
@@ -62,6 +64,16 @@ router.get('/retrieve', (req, res) => {
       return res.json(items);
     });
   });
+
+  router.get('/retdel', (req, res) => {
+    Deliverer.find({}, (err, items) => {
+        console.log(items);
+      if (err) return res.json({ success: false, error: err });
+      return res.json(items);
+    });
+  });
+
+
 
 
   router.get('/retrieveordereditems/:id', (req, res) => {
@@ -204,6 +216,19 @@ router.delete('/dew/:id',function(req,res,next){
 });
 
 
+router.post('/deletefromInvoice',function(req,res,next){
+   
+    InvoiceItems.deleteOne(req.body,(err, items) => {
+        console.log(items);
+      if (err) return res.json({ success: false, error: err });
+      return res.json(items);
+    });
+      
+  
+   
+
+}); 
+
 
 router.post('/deletef',function(req,res,next){
    
@@ -222,6 +247,16 @@ router.post('/deletef',function(req,res,next){
 router.post('/authenticate',function(req,res){
     Items.find(function(details){
         res.send(details);
+    });
+ 
+});
+
+router.post('/assignD/:id',function(req,res){
+    InvoiceItems.findOneAndUpdate({invoiceID:req.params.id},req.body).then(function(){
+        InvoiceItems.findOne({invoiceID:req.params.id}).then(function(details){
+            res.send(details);
+        });
+        
     });
  
 });
@@ -246,5 +281,27 @@ router.get('/', (req, res) => {
       return res.json(items);
     });
   });
+
+  router.post('/insertintodeliverer',function(req,res,next){
+    var det = new Deliverer({
+        driverID: req.body.driverID,
+        driverName: req.body.driverName,
+        email: req.body.email,
+        password: req.body.password,
+        username: req.body.username,
+        address:req.body.address,
+        mobile:req.body.mobile
+    });
+    det.save((err,doc)=>{
+        if(!err){
+            res.send(doc);  
+        }
+        else{
+            console.log('Error in sending Employees :'+ JSON.stringify(err,undefined,2));
+        }
+    });
+
+
+});
 
 module.exports=router;

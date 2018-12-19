@@ -57,8 +57,18 @@ router.get('/retrieve', (req, res) => {
     });
   });
 
-  router.get('/retrieveallinvoices', (req, res) => {
-    InvoiceItems.find({}, (err, items) => {
+  router.get('/retrieveallinvoices/:id', (req, res) => {
+    InvoiceItems.find({shopid:req.params.id}, (err, items) => {
+        console.log(items);
+      if (err) return res.json({ success: false, error: err });
+      return res.json(items);
+    });
+  });
+
+
+  router.post('/invoicesbydate', (req, res) => {
+      console.log(req.body.date);
+    InvoiceItems.find({date: {$regex : ".*"+req.body.date} }, (err, items) => {
         console.log(items);
       if (err) return res.json({ success: false, error: err });
       return res.json(items);

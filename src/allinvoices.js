@@ -14,6 +14,7 @@ class AI extends Component {
             item: [],
             ordered: [],
             examplemod: null,
+            searchq:""
 
         }
 
@@ -21,13 +22,15 @@ class AI extends Component {
         this.Bstatus = this.Bstatus.bind(this);
         // this.modalOnClick=this.modalOnClick.bind(this);
         this.deleteInvoice=this.deleteInvoice.bind(this);
+        this.handleSearch=this.handleSearch.bind(this);
+        this.handleDateSubmit=this.handleDateSubmit.bind(this);
     }
 
 
 
     componentDidMount() {
 
-        fetch('http://localhost:4000/index/retrieveallinvoices')
+        fetch('http://localhost:4000/index/retrieveallinvoices/'+this.state.shopid)
             .then(response => response.json())
 
             .then((res) => {
@@ -115,6 +118,47 @@ class AI extends Component {
 
 
 
+    handleSearch(event){
+        this.setState({
+            searchq: event.target.value
+        })
+    }
+
+    handleDateSubmit(){
+
+        let a=this.state.searchq
+        const item={
+            date:a   
+        }
+
+        fetch('http://localhost:4000/index/invoicesbydate',{
+            method:"POST",
+            headers: {
+              "Content-Type": "application/json"
+             
+            },
+            body:JSON.stringify(item)
+           
+          })
+          .then(function(response){ 
+    
+               return response.json(); 
+            
+           })
+           .then((res) => {
+            console.log(res);
+            console.log(res.length);
+            this.setState({
+
+                item: res
+            });
+            //console.log(this.state.item);
+        })
+
+       
+
+    }
+
 
     render() {
         let iid = 2;
@@ -130,22 +174,26 @@ class AI extends Component {
 
                     <div class="row justify-content-center">
                         <div class="col-12 col-md-10 col-lg-8">
-                            <form class="card card-sm">
+                            <div class="card card-sm">
                                 <div class="card-body row no-gutters align-items-center">
                                     <div class="col-auto">
                                         <i class="fas fa-search h4 text-body"></i>
                                     </div>
 
                                     <div class="col">
-                                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search by Date" />
+                                        <input class="form-control form-control-lg form-control-borderless" type="search" value={this.state.searchq} placeholder="Search by Date" onChange={this.handleSearch} />
                                     </div>
 
                                     <div class="col-auto">
-                                        <button class="btn btn-lg btn-success" type="submit">Search</button>
+                                        <button class="btn btn-lg btn-success" onClick={this.handleDateSubmit}>Search</button>
                                     </div>
 
+                                   
                                 </div>
-                            </form>
+                            </div>
+
+                            
+
                         </div>
 
                     </div>
